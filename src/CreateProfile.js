@@ -6,8 +6,9 @@ import {
   Link,
   push,
 } from "react-router-dom";
-import { v4 as uuid } from "uuid";
+//import { v4 as uuid } from "uuid";
 import ProfileForm from "./ProfileForm";
+const { uuid } = require('uuidv4');
 
 class CreateProfile extends React.Component {
   handleSubmit = (profile) => {
@@ -21,7 +22,19 @@ class CreateProfile extends React.Component {
       body: JSON.stringify(profile),
       headers: {
         "Content-Type": "application/json",
-      }
+      },
+      body: JSON.stringify({
+        id:uuid(),
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        userName: profile.userName,
+        password: profile.password,
+        bandname: profile.bandname,
+        bio: profile.bio,
+        profilePicture: profile.profilePicture
+        
+      
+      })
     };
     fetch(url, options)
       .then(res => {
@@ -40,7 +53,7 @@ class CreateProfile extends React.Component {
           password: "",
           bandname: "",
           bio: "",
-          profilePicture: ""
+          profilePicture: "",
           
         
         });

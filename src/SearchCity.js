@@ -25,7 +25,7 @@ class SearchCity extends React.Component {
   }
 
   componentDidMount() {
-    fetch('https://food-on-tour-api.herokuapp.com/searchcity')
+    fetch('http://localhost:8000/searchcity')
       .then(response => response.json())
       .then(restaurants => {
         console.log(restaurants);

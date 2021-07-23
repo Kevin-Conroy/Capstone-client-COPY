@@ -14,7 +14,7 @@ import LoginForm from "./LoginForm"
 //import profiles from "./ArtistData";
 
 const history = createBrowserHistory();
-const profiles = []
+const profiles = [];
 
 class App extends React.Component {
   constructor(props) {
@@ -34,11 +34,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+   
+let loginid=sessionStorage.getItem("loginid");
+
     fetch('http://localhost:8000/profiles')
       .then(response => response.json())
       .then(profiles => {
         console.log(profiles);
-        this.setState({ profiles })
+        this.setState({profiles: profiles, userId: loginid})
       });
   }
 
@@ -52,6 +55,7 @@ class App extends React.Component {
     }, () => history.push("/profile/"));
   }
 
+ 
   updateProfile(profile) {
     console.log(profile)
     const otherProfiles = this.state.profiles.filter(
@@ -68,7 +72,7 @@ class App extends React.Component {
   }
 
   render() {
-    
+ 
     const loggedInUser = this.state.profiles.find(
       (p) => p.id === this.state.userId
     );
@@ -78,7 +82,9 @@ class App extends React.Component {
           <Router history={history}>
             <Header />
             <NavBar />
-
+            <div style={{height:"20px"}}></div>
+            <button style={{backgroundColor:"red",color:"white"}} onClick={()=>{sessionStorage.clear();history.push("/");window.location.reload();}}> Logout </button>
+            
             <Route exact path="/" component={Welcome} />
             <Route
               exact

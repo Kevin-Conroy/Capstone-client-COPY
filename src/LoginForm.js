@@ -18,32 +18,45 @@ class LoginForm extends React.Component {
       this.setState({ password });
     }
   
-    handleLogin(event) {
-    const url ='http://localhost:8000/login/username/passsword';
-    
-    const options = {
-      method: 'POST',
+    async handleLogin(event) {
+       
+    if (!this.state.username || !this.state.password) {
+              alert("Username & password are required");
+              } else {
+                if(this.state.username.length<6 || this.state.password.length<6){
+                  alert("Username & Password must be atleast 6 character")
+                }else{
+                  const url ='http://localhost:8000/login/username/passsword';
+                  const options = {
+                      method: 'POST',
+                         
+                
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body:JSON.stringify({
+                        username:this.state.username,
+                        password:this.state.password,
+                      })
+                    };
+                    try{
+                   var token= await fetch(url, options).then(a=>a.json())
+                  // console.log(token.id,"asdf");
+                  if(token == '200'|| token=="400")
+                  alert("Wrong username or password... please check!!!");
+                  else{
+                   sessionStorage.setItem("tokenses", token.token);
+                   sessionStorage.setItem("loginid", token.id);
+                  }
+                    }catch(e){
+                      alert (e);
+                    }
+                }
+              }
 
-     
 
-      headers: {
-        "Content-Type": "application/json",
-      }
-    };
-    fetch(url, options)
-        event.preventDefault();
-        if (!this.state.username || !this.state.password) {
-            alert("Username & password are required");
-            } else {
-                fetch ({
-                    method: 'POST',
-                    body: JSON.stringify({
-                      username: this.state.username,
-                      password: this.state.password
-                   }),
-               })
-                 
-                 };
+
+
                }
          
         

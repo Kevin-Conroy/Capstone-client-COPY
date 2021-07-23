@@ -35,7 +35,26 @@ class Profile extends React.Component {
   }
 
   
+checktoken(){
+  let token = sessionStorage.getItem('tokenses');
+  let t="Bearer "+token;
+  console.log(t);
+  var url1 ='http://localhost:8000/profile';
+  var options = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json", "Authorization":t
+    },
+          
+    }
 
+  fetch(url1, options).then(a=>a.json()).then(a=>{
+    if(a=="403"|| a=="401"){
+      console.log("error");
+      // history.push("/");
+      window.location.href="/";
+    }  })
+}
  
 
   render() {
@@ -45,7 +64,7 @@ class Profile extends React.Component {
       alert("Please create a profile first");
       return <Redirect to="/createprofile" />;
     }
-
+this.checktoken();
     return (
       <div>
         <h1>
